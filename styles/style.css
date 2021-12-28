@@ -1,0 +1,24 @@
+* {
+    font-family:Arial, Helvetica, sans-serif
+}
+
+.movieCard {
+    background-color: orange;
+    border: 2px solid;
+}
+.afterSearch {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+}
+.favorite {
+    background-color: black;
+} .favList {
+    padding-right: 50px;
+    border-right: solid 2px;
+    width: 50%;
+}
+.results {
+    padding-left: 50px;
+}
