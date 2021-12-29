@@ -1,24 +1,39 @@
 * {
-    font-family:Arial, Helvetica, sans-serif
+    font-family:Arial, Helvetica, sans-serif;
+    background-color: black;
+}
+.body {
+    color: #30D9C3;
 }
 
-.movieCard {
-    background-color: orange;
-    border: 2px solid;
+.search__input {
+    border: solid 2px #30D9C3;
+    width: 400px;
+    height: 40px;
+    color: white;
 }
+.button {
+    background-color: #30D9C3;
+    color: white;
+    height: 40px;
+    width: 90px;
+    border-radius: 10px;
+    border-style: none;
+}
+
 .afterSearch {
     padding-top: 20px;
     display: flex;
     flex-direction: row;
     align-content: space-between;
 }
-.favorite {
-    background-color: black;
-} .favList {
+
+ .favList {
     padding-right: 50px;
     border-right: solid 2px;
     width: 50%;
 }
 .results {
     padding-left: 50px;
+    color:lightgray;
 }

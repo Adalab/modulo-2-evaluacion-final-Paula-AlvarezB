@@ -65,6 +65,8 @@ const handleAddToFavourites = (ev) => {
     title: foundSerie.title,
     image_url: foundSerie.image_url,
   });
+  const selectedSeries = ev.target;
+  selectedSeries.classList.toggle("favorite");
   paintFavourites();
 };
 console.log(favouriteSeries);
