@@ -14,7 +14,8 @@ let seriesSearch = [];
 let favouriteSeries = [];
 
 //función coger información del botón buscar
-function handleUserSearch() {
+function handleUserSearch(event) {
+  event.preventDefault();
   userSearch = userValue.value;
 
   fetch(`https://api.jikan.moe/v3/search/anime?q=${userSearch}`)
@@ -22,6 +23,12 @@ function handleUserSearch() {
     .then((data) => {
       seriesSearch = data.results;
       paintSeries();
+      //hacer clickables los divs de cada serie
+      const addToFavoritesSeriesList =
+        document.querySelectorAll(".js_add_series");
+      for (const addToSeriesClick of addToFavoritesSeriesList) {
+        addToSeriesClick.addEventListener("click", handleAddToFavourites);
+      }
     });
 }
 
@@ -34,21 +41,19 @@ const paintSeries = () => {
       eachSeries.image_url ===
         "https://via.placeholder.com/210x295/ffffff/666666/?text=TV";
     }
-    results.innerHTML += `<div class= "movieCard js_add_series" data-id="${eachSeries.mal_id}"<h4>Nombre de la serie: "${eachSeries.title}"</h4> <img class= "js_add_series"  src="${eachSeries.image_url}"></div>`;
-  }
-  //hacer clickables los divs de cada serie
-  const addToFavoritesSeriesList = document.querySelectorAll(".js_add_series");
-  for (const addToSeriesClick of addToFavoritesSeriesList) {
-    addToSeriesClick.addEventListener("click", handleAddToFavourites);
+    results.innerHTML += `<li class= "movieCard js_add_series" data-id="${eachSeries.mal_id}"><h4>Nombre de la serie: "${eachSeries.title}"</h4> <img class="thumbnail js_add_series" src="${eachSeries.image_url}"></li>`;
   }
 };
-function handleReset() {
+function handleReset(event) {
+  event.preventDefault;
   userValue.value = "";
   results.innerHTML = "";
 }
 resetBtn.addEventListener("click", handleReset);
 
 const handleAddToFavourites = (ev) => {
+  const favSection = document.querySelector(".js_favSection");
+  favSection.classList.remove("hidden");
   const selectedSeries = ev.target;
   let clickedId = parseInt(ev.target.dataset.id);
 
@@ -77,6 +82,8 @@ const handleAddToFavourites = (ev) => {
       image_url: foundSerie.image_url,
     });
     selectedSeries.classList.add("favorite");
+
+    //pintar en la parte izquierda las tarjetas de las películaque están en el array de favoritas
     paintFavourites();
   } else {
     let foundSerie;
@@ -99,6 +106,6 @@ const handleAddToFavourites = (ev) => {
 function paintFavourites() {
   favResults.innerHTML = "";
   for (const eachFavorite of favouriteSeries) {
-    favResults.innerHTML += `<div class= "movieCard js_add_series" data-id="${eachFavorite.mal_id}"<h4>Nombre de la serie: "${eachFavorite.title}"</h4> <img src="${eachFavorite.image_url}"></div>`;
+    favResults.innerHTML += `<li class= favCard js_add_series" data-id="${eachFavorite.mal_id}"<h4>Nombre de la serie: "${eachFavorite.title}"</h4> <img class= "thumbnail" src="${eachFavorite.image_url}"></li>`;
   }
 }

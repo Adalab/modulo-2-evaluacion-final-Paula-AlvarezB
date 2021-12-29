@@ -28,19 +28,46 @@
     align-content: space-between;
 }
 
+.thumbnail {
+  width: 90%;
+    object-fit: fill;
+}
 
+.hidden {
+    display: none;
+}
  .favList {
+     
      color: pink;
     padding-right: 50px;
-    border-right: solid 2px;
-    width: 50%;
+    height: 100vh;
+    border: solid 2px;
+    width: 30%;
 }
 .results {
-    padding-left: 50px;
+    margin-left: 50px;
     color:lightgray;
+    height: 100vh;
+    border: solid 2px;
+    width: 70%;
+    
+}
+.foundResults {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .favorite{
      color: #30D9C3;
      border: #30D9C3 solid 2px;
+}
+.movieCard {
+   list-style: none;
+    width: 23%;
+    padding: 30px;
+}
+
+.favCard {
+    list-style: none;
+    width: 50%;
 }
