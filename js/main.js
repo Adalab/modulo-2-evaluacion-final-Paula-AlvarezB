@@ -6,6 +6,7 @@ let resetBtn = document.querySelector(".js_resetButton");
 let userValue = document.querySelector(".js_input");
 
 const results = document.querySelector(".js_results");
+const favResults = document.querySelector(".js_favShows");
 
 //series encontradas
 let seriesSearch = [];
@@ -48,6 +49,7 @@ function handleReset() {
 resetBtn.addEventListener("click", handleReset);
 
 const handleAddToFavourites = (ev) => {
+  console.log(ev.target);
   console.log(seriesSearch, ev.target.dataset.id);
   let clickedId = parseInt(ev.target.dataset.id);
   let foundSerie;
@@ -56,12 +58,19 @@ const handleAddToFavourites = (ev) => {
       foundSerie = singleSerie;
     }
   }
-  console.log("Bingo", foundSerie);
+  console.log("Bingo", foundSerie.title);
 
   favouriteSeries.push({
     mal_id: foundSerie.mal_id,
     title: foundSerie.title,
     image_url: foundSerie.image_url,
   });
-  console.log(favouriteSeries);
+  paintFavourites();
 };
+console.log(favouriteSeries);
+
+function paintFavourites() {
+  for (const eachFavorite of favouriteSeries) {
+    favResults.innerHTML += `<div class= "movieCard js_add_series" data-id="${eachFavorite.mal_id}"<h4>Nombre de la serie: "${eachFavorite.title}"</h4> <img src="${eachFavorite.image_url}"></div>`;
+  }
+}
