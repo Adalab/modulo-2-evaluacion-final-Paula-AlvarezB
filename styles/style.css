@@ -28,7 +28,9 @@
     align-content: space-between;
 }
 
+
  .favList {
+     color: pink;
     padding-right: 50px;
     border-right: solid 2px;
     width: 50%;
@@ -36,4 +38,9 @@
 .results {
     padding-left: 50px;
     color:lightgray;
+}
+
+.favorite{
+     color: #30D9C3;
+     border: #30D9C3 solid 2px;
 }

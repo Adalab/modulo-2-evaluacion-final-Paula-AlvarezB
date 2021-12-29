@@ -1,3 +1,4 @@
+/*
 "use strict";
 
 //variables globales
@@ -49,56 +50,32 @@ function handleReset() {
 resetBtn.addEventListener("click", handleReset);
 
 const handleAddToFavourites = (ev) => {
-  const selectedSeries = ev.target;
-  let clickedId = parseInt(ev.target.dataset.id);
-
   //comprobar si una serie ya está en favoritos para que no se repita usando el array favouriteSeries y la variable clickedID
 
-  let foundSerie2;
-  for (const eachFavorite of favouriteSeries) {
-    if (eachFavorite.mal_id === clickedId) {
-      foundSerie2 = eachFavorite;
+  console.log
+
+  let clickedId = parseInt(ev.target.dataset.id);
+  let foundSerie;
+  for (const singleSerie of seriesSearch) {
+    if (singleSerie.mal_id === clickedId) {
+      foundSerie = singleSerie;
     }
   }
 
-  console.log(foundSerie2);
-  if (foundSerie2 === undefined) {
-    //busco el producto clickado
-    let foundSerie;
-    for (const singleSerie of seriesSearch) {
-      if (singleSerie.mal_id === clickedId) {
-        foundSerie = singleSerie;
-      }
-    }
-
-    favouriteSeries.push({
-      mal_id: foundSerie.mal_id,
-      title: foundSerie.title,
-      image_url: foundSerie.image_url,
-    });
-    selectedSeries.classList.add("favorite");
-    paintFavourites();
-  } else {
-    let foundSerie;
-    for (const singleSerie of seriesSearch) {
-      if (singleSerie.mal_id === clickedId) {
-        foundSerie = singleSerie;
-      }
-    }
-
-    favouriteSeries.pop({
-      mal_id: foundSerie.mal_id,
-      title: foundSerie.title,
-      image_url: foundSerie.image_url,
-    });
-    selectedSeries.classList.remove("favorite");
-    paintFavourites();
-  }
+  favouriteSeries.push({
+    mal_id: foundSerie.mal_id,
+    title: foundSerie.title,
+    image_url: foundSerie.image_url,
+  });
+  const selectedSeries = ev.target;
+  selectedSeries.classList.toggle("favorite");
+  paintFavourites();
 };
+console.log(favouriteSeries);
 
 function paintFavourites() {
-  favResults.innerHTML = "";
   for (const eachFavorite of favouriteSeries) {
     favResults.innerHTML += `<div class= "movieCard js_add_series" data-id="${eachFavorite.mal_id}"<h4>Nombre de la serie: "${eachFavorite.title}"</h4> <img src="${eachFavorite.image_url}"></div>`;
   }
 }
+ */
