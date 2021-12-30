@@ -1,6 +1,6 @@
 "use strict";
 
-//variables globales
+//VARIABLES GLOBALES HTML
 let userSearch = document.querySelector(".js_searchButton");
 let resetBtn = document.querySelector(".js_resetButton");
 let userValue = document.querySelector(".js_input");
@@ -10,11 +10,11 @@ const favResults = document.querySelector(".js_favShows");
 //ARRAYS
 //series encontradas
 let seriesSearch = [];
-//series elegidas como favoritas
+//series marcadas como favoritas
 let favouriteSeries = [];
 
+//BOTÓN DE BUSCAR
 //función coger información del botón buscar
-
 function handleUserSearch(event) {
   event.preventDefault();
   userSearch = userValue.value;
@@ -35,6 +35,22 @@ function handleUserSearch(event) {
 
 userSearch.addEventListener("click", handleUserSearch);
 
+//LOCAL STORAGE
+//leer del local storage
+const getFromLocalStorage = () => {
+  const localStorageFavs = localStorage.getItem("favourites");
+  if (localStorageFavs !== null) {
+    favouriteSeries = JSON.parse(localStorageFavs);
+    paintFavourites();
+  }
+};
+
+//revisar el local storage a ver si tiene algo
+getFromLocalStorage();
+
+//pintar las series favoritas que haya guardadas
+paintFavourites();
+
 // // //función pintar series encontradas en la búsqueda
 const paintSeries = () => {
   for (const eachSeries of seriesSearch) {
@@ -45,6 +61,23 @@ const paintSeries = () => {
     results.innerHTML += `<li class= "movieCard js_add_series" data-id="${eachSeries.mal_id}"><h4>Nombre de la serie: "${eachSeries.title}"</h4> <img class="thumbnail js_add_series" src="${eachSeries.image_url}"></li>`;
   }
 };
+
+//función activar el botón x para borrar
+deleteFavorites();
+//función borrar elementos de favoritos directamente
+function XremoveFavorites() {
+  console.log("funciona");
+}
+
+function deleteFavorites() {
+  //seleccionar todas la x para borrar elementos de favoritos
+  let removeFavorites = document.querySelectorAll(".js_removeFavorites");
+
+  for (const eachRemove of removeFavorites) {
+    eachRemove.addEventListener("click", XremoveFavorites);
+  }
+}
+
 function handleReset(event) {
   event.preventDefault;
   userValue.value = "";
@@ -109,24 +142,13 @@ const handleAddToFavourites = (ev) => {
 function paintFavourites() {
   favResults.innerHTML = "";
   for (const eachFavorite of favouriteSeries) {
-    favResults.innerHTML += `<li class= favCard js_add_series" data-id="${eachFavorite.mal_id}"<h4>Nombre de la serie: "${eachFavorite.title}"</h4> <img class= "thumbnail" src="${eachFavorite.image_url}"></li>`;
+    favResults.innerHTML += `<li class= favCard js_add_series" data-id="${eachFavorite.mal_id}"><img class= "thumbnail" src="${eachFavorite.image_url}"><h4>Nombre de la serie: "${eachFavorite.title}"</h4> <i class="fas fa-times-circle js_removeFavorites"></i></li>`;
   }
+  deleteFavorites();
 }
-
-//LOCAL STORAGE
-//leer del local storage
-const getFromLocalStorage = () => {
-  const localStorageFavs = localStorage.getItem("favourites");
-  if (localStorageFavs !== null) {
-    favouriteSeries = JSON.parse(localStorageFavs);
-    paintFavourites();
-  }
-};
 
 //guardar en local Storage
 const setInLoCalStorage = () => {
   const stringifiedFavouriteSeries = JSON.stringify(favouriteSeries);
   localStorage.setItem("favourites", stringifiedFavouriteSeries);
 };
-getFromLocalStorage();
-paintFavourites();
