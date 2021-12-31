@@ -65,6 +65,12 @@
    list-style: none;
     width: 23%;
     padding: 30px;
+    box-sizing:content-box;
+    
+}
+.movieDiv{
+    width: 100%;
+    
 }
 
 .favCard {
