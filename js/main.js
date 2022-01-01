@@ -57,17 +57,38 @@ const paintSeries = () => {
     if (eachSeries.image_url === "null") {
       eachSeries.image_url ===
         "https://via.placeholder.com/210x295/ffffff/666666/?text=TV";
+    } else {
+      results.innerHTML += `<li class= "movieCard js_add_series" data-id="${eachSeries.mal_id}"<div class ="movieDiv"<h4>Nombre de la serie: "${eachSeries.title}" </h4> <img class="thumbnail js_add_series"  src="${eachSeries.image_url}"><div></li>`;
     }
-    results.innerHTML += `<li class= "movieCard js_add_series" data-id="${eachSeries.mal_id}"<div class ="movieDiv"<h4>Nombre de la serie: "${eachSeries.title}" </h4> <img class="thumbnail js_add_series"  src="${eachSeries.image_url}"><div></li>`;
   }
 };
 
 //función activar el botón x para borrar
 listenButtonFavorites();
-//función borrar elementos de favoritos directamente
+
+//función borrar elementos de favoritos
+
 function XremoveFavorites(ev) {
   const clickedId = parseInt(ev.target.dataset.id);
   console.log(clickedId);
+
+  let serieToDelete;
+  for (const eachFoundSerie of seriesSearch) {
+    if (eachFoundSerie.mal_id === clickedId) {
+      console.log("eureka");
+
+      serieToDelete = eachFoundSerie.mal_id;
+      console.log(serieToDelete);
+
+      const dataID = document.querySelector(".results");
+      const dataIDchildren = dataID.childNodes;
+
+      if (dataIDchildren.getAttribute("dataset.id") === serieToDelete) {
+        console.log("borrar funciona");
+      }
+    }
+  }
+
   let foundItem;
   //iterar para encontrar el item en el array favoriteSeries con ese id
   for (const serieInFavorites of favouriteSeries) {
@@ -75,6 +96,8 @@ function XremoveFavorites(ev) {
       foundItem = serieInFavorites;
     }
   }
+
+  //eliminar la serie del array de favoritos
   let foundIndex;
   for (let index = 0; index < favouriteSeries.length; index += 1) {
     if (favouriteSeries[index].mal_id === clickedId) {
@@ -83,9 +106,12 @@ function XremoveFavorites(ev) {
   }
   console.log(foundIndex);
   favouriteSeries.splice(foundIndex, 1);
+
+  // eachFavorite.parentNode.classList.toggle("favorite");
+
+  //volver a pintar favoritos sin la serie eliminada
   paintFavourites();
 }
-// }
 
 function listenButtonFavorites() {
   //seleccionar todas la x para borrar elementos de favoritos
@@ -95,7 +121,17 @@ function listenButtonFavorites() {
     eachRemove.addEventListener("click", XremoveFavorites);
   }
 }
+function deleteAllFavorites() {
+  console.log("botonFunciona");
+  favouriteSeries = [];
+  paintFavourites();
+  setInLoCalStorage();
+}
 
+function listenButtonDeleteAllFavorites() {
+  const deleteAllFavs = document.querySelector(".js_buttonDeleteAllFavorites");
+  deleteAllFavs.addEventListener("click", deleteAllFavorites);
+}
 function handleReset(event) {
   event.preventDefault;
   userValue.value = "";
@@ -116,6 +152,7 @@ const handleAddToFavourites = (ev) => {
   for (const eachFavorite of favouriteSeries) {
     if (eachFavorite.mal_id === clickedId) {
       foundSerie2 = eachFavorite;
+      selectedSeries.classList.toggle("favorite");
     }
   }
   //si la serie todavía no está en favoritos, se añade revisando el id de la serie para asociarla a su nombre y añadir esa en concreto al array de favoritos
@@ -136,24 +173,12 @@ const handleAddToFavourites = (ev) => {
     });
 
     //añadir clase css al elemento clickado
-    selectedSeries.classList.add("favorite");
+    selectedSeries.classList.toggle("favorite");
 
     //pintar en la parte izquierda las tarjetas de las películas que están en el array de favoritas
     paintFavourites();
     //si la película ya esté en el array de favoritos
   } else {
-    // let foundSerie;
-    // for (const singleSerie of seriesSearch) {
-    //   if (singleSerie.mal_id === clickedId) {
-    //     foundSerie = singleSerie;
-    //   }
-    // }
-    // //sacar la película del array de favoritos
-    // favouriteSeries.pop({
-    //   mal_id: foundSerie.mal_id,
-    //   title: foundSerie.title,
-    //   image_url: foundSerie.image_url,
-    // });
     XremoveFavorites(ev);
     selectedSeries.classList.remove("favorite");
     paintFavourites();
@@ -166,9 +191,20 @@ const handleAddToFavourites = (ev) => {
 function paintFavourites() {
   favResults.innerHTML = "";
   for (const eachFavorite of favouriteSeries) {
-    favResults.innerHTML += `<li class= favCard js_add_series" data-id="${eachFavorite.mal_id}"><img class= "thumbnail" src="${eachFavorite.image_url}"><h4>Nombre de la serie: "${eachFavorite.title}"</h4> <i data-id="${eachFavorite.mal_id}" class="fas fa-times-circle js_removeFavorites"></i></li>`;
+    favResults.innerHTML += `<li class= favCard js_fav_series" data-id="${eachFavorite.mal_id}"><img class= "thumbnail" src="${eachFavorite.image_url}"><h4>Nombre de la serie: "${eachFavorite.title}"</h4> <i data-id="${eachFavorite.mal_id}" class="fas fa-times-circle js_removeFavorites"></i></li>`;
   }
+  favResults.innerHTML += `<button class="deleteAll  js_buttonDeleteAllFavorites">Borrar todos</button>`;
+
+  // const deleteButtonAll = document.getElementsByClassName("deleteAll");
+  // const parentDelete = deleteButtonAll.parentNode;
+  // console.log(parentDelete);
+  // if (favouriteSeries.length > 1) {
+  //   console.log("supera");
+  //   console.log(deleteButtonAll);
+  //   deleteButtonAll.classList.remove("hidden");
+  // }
   listenButtonFavorites();
+  listenButtonDeleteAllFavorites();
 }
 
 //guardar en local Storage
