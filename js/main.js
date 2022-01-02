@@ -61,6 +61,18 @@ const paintSeries = () => {
       results.innerHTML += `<li class= "movieCard js_add_series" data-id="${eachSeries.mal_id}"<div class ="movieDiv"<h4>Nombre de la serie: "${eachSeries.title}" </h4> <img class="thumbnail js_add_series"  src="${eachSeries.image_url}"><div></li>`;
     }
   }
+
+  //al cargar la lista de resultados, revisar si está en favoritos y si lo está, añadirle la clase css favoritos
+  const searchID = document.getElementsByClassName("js_add_series");
+  const favID = document.getElementsByClassName("js_fav_series");
+
+  for (const eachLi of searchID) {
+    for (const eachFavLi of favID) {
+      if (parseInt(eachLi.dataset.id) === parseInt(eachFavLi.dataset.id)) {
+        eachLi.classList.add("favorite");
+      }
+    }
+  }
 };
 
 //función activar el botón x para borrar
@@ -80,11 +92,14 @@ function XremoveFavorites(ev) {
       serieToDelete = eachFoundSerie.mal_id;
       console.log(serieToDelete);
 
-      const dataID = document.querySelector(".results");
-      const dataIDchildren = dataID.childNodes;
+      const dataID = document.getElementsByClassName("js_add_series");
+      debugger;
+      for (const eachLi of dataID) {
+        console.log(eachLi.dataset.id);
 
-      if (dataIDchildren.getAttribute("dataset.id") === serieToDelete) {
-        console.log("borrar funciona");
+        if (parseInt(eachLi.dataset.id) === clickedId) {
+          eachLi.classList.toggle("favorite");
+        }
       }
     }
   }
@@ -152,7 +167,7 @@ const handleAddToFavourites = (ev) => {
   for (const eachFavorite of favouriteSeries) {
     if (eachFavorite.mal_id === clickedId) {
       foundSerie2 = eachFavorite;
-      selectedSeries.classList.toggle("favorite");
+      selectedSeries.classList.add("favorite");
     }
   }
   //si la serie todavía no está en favoritos, se añade revisando el id de la serie para asociarla a su nombre y añadir esa en concreto al array de favoritos
@@ -180,7 +195,7 @@ const handleAddToFavourites = (ev) => {
     //si la película ya esté en el array de favoritos
   } else {
     XremoveFavorites(ev);
-    selectedSeries.classList.remove("favorite");
+    selectedSeries.classList.toggle("favorite");
     paintFavourites();
   }
   paintFavourites();
@@ -191,19 +206,26 @@ const handleAddToFavourites = (ev) => {
 function paintFavourites() {
   favResults.innerHTML = "";
   for (const eachFavorite of favouriteSeries) {
-    favResults.innerHTML += `<li class= favCard js_fav_series" data-id="${eachFavorite.mal_id}"><img class= "thumbnail" src="${eachFavorite.image_url}"><h4>Nombre de la serie: "${eachFavorite.title}"</h4> <i data-id="${eachFavorite.mal_id}" class="fas fa-times-circle js_removeFavorites"></i></li>`;
+    favResults.innerHTML += `<li class= "favCard js_fav_series" data-id="${eachFavorite.mal_id}"><img class= "thumbnail" src="${eachFavorite.image_url}"><h4>Nombre de la serie: "${eachFavorite.title}"</h4> <i data-id="${eachFavorite.mal_id}" class="fas fa-times-circle js_removeFavorites"></i></li>`;
   }
-  favResults.innerHTML += `<button class="deleteAll  js_buttonDeleteAllFavorites">Borrar todos</button>`;
+  favResults.innerHTML += `<button class="deleteAll  js_buttonDeleteAllFavorites hidden">Borrar todos</button>`;
 
-  // const deleteButtonAll = document.getElementsByClassName("deleteAll");
-  // const parentDelete = deleteButtonAll.parentNode;
-  // console.log(parentDelete);
-  // if (favouriteSeries.length > 1) {
-  //   console.log("supera");
-  //   console.log(deleteButtonAll);
-  //   deleteButtonAll.classList.remove("hidden");
-  // }
+  const deleteButtonAll = document.getElementsByClassName("deleteAll");
+  const parentDelete = deleteButtonAll.parentNode;
+
+  //hacer que el botón borrar todo desaparezca cuando hay un elemento o menos
+  if (favouriteSeries.length > 1) {
+    for (const buttonD of deleteButtonAll) {
+      buttonD.classList.remove("hidden");
+    }
+  }
+
+  //añadir listeners para los dos tipos de botones que se generan
+
+  //x para borrar de uno en uno:
+
   listenButtonFavorites();
+  //borra todos
   listenButtonDeleteAllFavorites();
 }
 
