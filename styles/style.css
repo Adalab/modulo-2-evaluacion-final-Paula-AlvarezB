@@ -40,7 +40,7 @@
      
      color: pink;
     padding-right: 50px;
-    height: 100vh;
+    height: auto;
     border: solid 2px;
     width: 30%;
 }

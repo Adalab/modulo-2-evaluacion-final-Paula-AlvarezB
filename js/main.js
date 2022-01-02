@@ -51,7 +51,7 @@ getFromLocalStorage();
 //pintar las series favoritas que haya guardadas
 paintFavourites();
 
-// // //función pintar series encontradas en la búsqueda
+//función pintar series encontradas en la búsqueda
 const paintSeries = () => {
   for (const eachSeries of seriesSearch) {
     if (eachSeries.image_url === "null") {
@@ -137,10 +137,15 @@ function listenButtonFavorites() {
   }
 }
 function deleteAllFavorites() {
-  console.log("botonFunciona");
   favouriteSeries = [];
   paintFavourites();
   setInLoCalStorage();
+  //eliminar clase css de lista de resutados al borrar todos los favoritos
+
+  const deleteAllClasses = document.getElementsByClassName("js_add_series");
+  for (const eachSerie of deleteAllClasses) {
+    eachSerie.classList.remove("favorite");
+  }
 }
 
 function listenButtonDeleteAllFavorites() {
