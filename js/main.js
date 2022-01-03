@@ -86,16 +86,11 @@ function XremoveFavorites(ev) {
   let serieToDelete;
   for (const eachFoundSerie of seriesSearch) {
     if (eachFoundSerie.mal_id === clickedId) {
-      console.log("eureka");
-
       serieToDelete = eachFoundSerie.mal_id;
-      console.log(serieToDelete);
 
       const dataID = document.getElementsByClassName("js_add_series");
 
       for (const eachLi of dataID) {
-        // console.log(eachLi.dataset.id);
-
         if (parseInt(eachLi.dataset.id) === clickedId) {
           eachLi.classList.toggle("favorite");
         }
@@ -118,11 +113,11 @@ function XremoveFavorites(ev) {
       foundIndex = index;
     }
   }
-  console.log("position in index", foundIndex);
+
   favouriteSeries.splice(foundIndex, 1);
 
   // eachFavorite.parentNode.classList.toggle("favorite");
-
+  setInLoCalStorage();
   //volver a pintar favoritos sin la serie eliminada
   paintFavourites();
 }
