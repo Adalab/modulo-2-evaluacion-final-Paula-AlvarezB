@@ -24,12 +24,6 @@ function handleUserSearch(event) {
     .then((data) => {
       seriesSearch = data.results;
       paintSeries();
-      //hacer clickables los divs de cada serie
-      const addToFavoritesSeriesList =
-        document.querySelectorAll(".js_add_series");
-      for (const addToSeriesClick of addToFavoritesSeriesList) {
-        addToSeriesClick.addEventListener("click", handleAddToFavourites);
-      }
     });
 }
 
@@ -54,12 +48,17 @@ paintFavourites();
 //función pintar series encontradas en la búsqueda
 const paintSeries = () => {
   for (const eachSeries of seriesSearch) {
-    if (eachSeries.image_url === "null") {
-      eachSeries.image_url ===
-        "https://via.placeholder.com/210x295/ffffff/666666/?text=TV";
+    if (eachSeries.image_url === null) {
+      results.innerHTML += `<li class= "movieCard js_add_series" data-id="${eachSeries.mal_id}"<div class ="movieDiv"<h4>Nombre de la serie: "${eachSeries.title}" </h4> <img class="thumbnail js_add_series"  src=""https://via.placeholder.com/210x295/ffffff/666666/?text=TV""><div></li>`;
     } else {
-      results.innerHTML += `<li class= "movieCard js_add_series" data-id="${eachSeries.mal_id}"<div class ="movieDiv"<h4>Nombre de la serie: "${eachSeries.title}" </h4> <img class="thumbnail js_add_series"  src="${eachSeries.image_url}"><div></li>`;
+      results.innerHTML += `<li class= "movieCard js_add_series" data-id="${eachSeries.mal_id}"><h4>Nombre de la serie: "${eachSeries.title}" </h4> <img data-id="${eachSeries.mal_id}"class="thumbnail"  src="${eachSeries.image_url}"/></li>`;
     }
+  }
+
+  //hacer clickables los li de cada serie
+  const addToFavoritesSeriesList = document.querySelectorAll(".js_add_series");
+  for (const addToSeriesClick of addToFavoritesSeriesList) {
+    addToSeriesClick.addEventListener("click", handleAddToFavourites);
   }
 
   //al cargar la lista de resultados, revisar si está en favoritos y si lo está, añadirle la clase css favoritos
@@ -81,7 +80,7 @@ listenButtonFavorites();
 //función borrar elementos de favoritos
 
 function XremoveFavorites(ev) {
-  const clickedId = parseInt(ev.target.dataset.id);
+  const clickedId = parseInt(ev.currentTarget.dataset.id);
   console.log(clickedId);
 
   let serieToDelete;
@@ -93,9 +92,9 @@ function XremoveFavorites(ev) {
       console.log(serieToDelete);
 
       const dataID = document.getElementsByClassName("js_add_series");
-      debugger;
+
       for (const eachLi of dataID) {
-        console.log(eachLi.dataset.id);
+        // console.log(eachLi.dataset.id);
 
         if (parseInt(eachLi.dataset.id) === clickedId) {
           eachLi.classList.toggle("favorite");
@@ -119,7 +118,7 @@ function XremoveFavorites(ev) {
       foundIndex = index;
     }
   }
-  console.log(foundIndex);
+  console.log("position in index", foundIndex);
   favouriteSeries.splice(foundIndex, 1);
 
   // eachFavorite.parentNode.classList.toggle("favorite");
@@ -160,12 +159,11 @@ function handleReset(event) {
 resetBtn.addEventListener("click", handleReset);
 
 const handleAddToFavourites = (ev) => {
-  //usar parentNode para darle toda la acción a li?
-  const selectedSeries = ev.target;
-  const selectedSeriesParent = selectedSeries.parentNode;
-  console.log(selectedSeries);
-  console.log(ev.target.dataset.id);
-  let clickedId = parseInt(ev.target.dataset.id);
+  const selectedSeries = ev.currentTarget;
+
+  // console.log(selectedSeries);
+  // console.log(selectedSeries.dataset.id);
+  let clickedId = parseInt(selectedSeries.dataset.id);
 
   //comprobar si una serie ya está en favoritos para que no se repita usando el array favouriteSeries y la variable clickedID
   let foundSerie2;
@@ -176,35 +174,35 @@ const handleAddToFavourites = (ev) => {
     }
   }
   //si la serie todavía no está en favoritos, se añade revisando el id de la serie para asociarla a su nombre y añadir esa en concreto al array de favoritos
+
   if (foundSerie2 === undefined) {
     //busco el producto clickado en el array del resultado de búsqueda
 
     let foundSerie;
     for (const singleSerie of seriesSearch) {
+      // console.log(clickedId, singleSerie.mal_id);
       if (singleSerie.mal_id === clickedId) {
         foundSerie = singleSerie;
+        favouriteSeries.push({
+          mal_id: foundSerie.mal_id,
+          title: foundSerie.title,
+          image_url: foundSerie.image_url,
+        });
       }
     }
     //añadir la serie al array de favoritos
-    favouriteSeries.push({
-      mal_id: foundSerie.mal_id,
-      title: foundSerie.title,
-      image_url: foundSerie.image_url,
-    });
 
     //añadir clase css al elemento clickado
-    selectedSeries.classList.toggle("favorite");
+    selectedSeries.classList.add("favorite");
 
     //pintar en la parte izquierda las tarjetas de las películas que están en el array de favoritas
     paintFavourites();
     //si la película ya esté en el array de favoritos
   } else {
     XremoveFavorites(ev);
-    selectedSeries.classList.toggle("favorite");
+    selectedSeries.classList.remove("favorite");
     paintFavourites();
   }
-  paintFavourites();
-  console.log(favouriteSeries);
   setInLoCalStorage();
 };
 
