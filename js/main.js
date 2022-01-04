@@ -13,12 +13,12 @@ let seriesSearch = [];
 //series marcadas como favoritas
 let favouriteSeries = [];
 
-//BOTÓN DE BUSCAR
-//función coger información del botón buscar
+// BOTÓN DE BUSCAR
+// función coger información del botón buscar
+
 function handleUserSearch(event) {
   event.preventDefault();
   userSearch = userValue.value;
-
   fetch(`https://api.jikan.moe/v3/search/anime?q=${userSearch}`)
     .then((response) => response.json())
     .then((data) => {
@@ -47,6 +47,7 @@ paintFavourites();
 
 //función pintar series encontradas en la búsqueda
 const paintSeries = () => {
+  results.innerHTML = "";
   for (const eachSeries of seriesSearch) {
     if (eachSeries.image_url === null) {
       results.innerHTML += `<li class= "movieCard js_add_series" data-id="${eachSeries.mal_id}"<div class ="movieDiv"<h4>Nombre de la serie: "${eachSeries.title}" </h4> <img class="thumbnail js_add_series"  src=""https://via.placeholder.com/210x295/ffffff/666666/?text=TV""><div></li>`;
