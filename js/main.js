@@ -55,7 +55,6 @@ const paintSeries = () => {
       results.innerHTML += `<li class= "movieCard js_add_series" data-id="${eachSeries.mal_id}"><h4>Nombre de la serie: "${eachSeries.title}" </h4> <img data-id="${eachSeries.mal_id}"class="thumbnail"  src="${eachSeries.image_url}"/></li>`;
     }
   }
-
   //hacer clickables los li de cada serie
   const addToFavoritesSeriesList = document.querySelectorAll(".js_add_series");
   for (const addToSeriesClick of addToFavoritesSeriesList) {
@@ -82,20 +81,12 @@ listenButtonFavorites();
 
 function XremoveFavorites(ev) {
   const clickedId = parseInt(ev.currentTarget.dataset.id);
-  console.log(clickedId);
 
-  let serieToDelete;
-  for (const eachFoundSerie of seriesSearch) {
-    if (eachFoundSerie.mal_id === clickedId) {
-      serieToDelete = eachFoundSerie.mal_id;
+  const dataID = document.getElementsByClassName("js_add_series");
 
-      const dataID = document.getElementsByClassName("js_add_series");
-
-      for (const eachLi of dataID) {
-        if (parseInt(eachLi.dataset.id) === clickedId) {
-          eachLi.classList.toggle("favorite");
-        }
-      }
+  for (const eachLi of dataID) {
+    if (parseInt(eachLi.dataset.id) === clickedId) {
+      eachLi.classList.toggle("favorite");
     }
   }
 
@@ -157,26 +148,21 @@ resetBtn.addEventListener("click", handleReset);
 const handleAddToFavourites = (ev) => {
   const selectedSeries = ev.currentTarget;
 
-  // console.log(selectedSeries);
-  // console.log(selectedSeries.dataset.id);
   let clickedId = parseInt(selectedSeries.dataset.id);
 
   //comprobar si una serie ya está en favoritos para que no se repita usando el array favouriteSeries y la variable clickedID
-  let foundSerie2;
-  for (const eachFavorite of favouriteSeries) {
-    if (eachFavorite.mal_id === clickedId) {
-      foundSerie2 = eachFavorite;
-      selectedSeries.classList.add("favorite");
-    }
-  }
-  //si la serie todavía no está en favoritos, se añade revisando el id de la serie para asociarla a su nombre y añadir esa en concreto al array de favoritos
 
-  if (foundSerie2 === undefined) {
-    //busco el producto clickado en el array del resultado de búsqueda
+  const selectedSeriesData = seriesSearch.find(
+    (singleSerie) => singleSerie.mal_id === clickedId
+  );
+  const favoriteSeriesData = favouriteSeries.find(
+    (singleFavSerie) => singleFavSerie.mal_id === clickedId
+  );
 
+  //añadir la serie al array de favoritos
+  if (favoriteSeriesData === undefined) {
     let foundSerie;
     for (const singleSerie of seriesSearch) {
-      // console.log(clickedId, singleSerie.mal_id);
       if (singleSerie.mal_id === clickedId) {
         foundSerie = singleSerie;
         favouriteSeries.push({
