@@ -6,12 +6,15 @@ let resetBtn = document.querySelector(".js_resetButton");
 let userValue = document.querySelector(".js_input");
 const results = document.querySelector(".js_results");
 const favResults = document.querySelector(".js_favShows");
+const resultsNumber = document.querySelector(".js_resultsNumber");
 
 //ARRAYS
 //series encontradas
 let seriesSearch = [];
 //series marcadas como favoritas
 let favouriteSeries = [];
+//array para búsqueda
+const resultsSearch = [2, 5, 9];
 
 // BOTÓN DE BUSCAR
 // función coger información del botón buscar
@@ -48,11 +51,25 @@ paintFavourites();
 //función pintar series encontradas en la búsqueda
 const paintSeries = () => {
   results.innerHTML = "";
+  resultsNumber.innerHTML += `<p class="js_resultsNumber"> Número de resultados: "${seriesSearch.length}" </p>`;
+
+  const paintConsole = document.querySelector(".js_resultsNumber");
+  paintConsole.addEventListener("click", () => {
+    console.log("funciona");
+    for (const eachNumber of resultsSearch) {
+      if (seriesSearch.length > eachNumber) {
+        resultsNumber.innerHTML += `<p> El número de resultados es ${seriesSearch.length} y es mayor que ${eachNumber}</p>`;
+      } else {
+        resultsNumber.innerHTML += `<p> El número de resultados es ${seriesSearch.length} y es menor que ${eachNumber}</p>`;
+      }
+    }
+  });
+
   for (const eachSeries of seriesSearch) {
     if (eachSeries.image_url === null) {
       results.innerHTML += `<li class= "movieCard js_add_series" data-id="${eachSeries.mal_id}"<div class ="movieDiv"<h4>Nombre de la serie: "${eachSeries.title}" </h4> <img class="thumbnail js_add_series"  src=""https://via.placeholder.com/210x295/ffffff/666666/?text=TV""><div></li>`;
     } else {
-      results.innerHTML += `<li class= "movieCard js_add_series" data-id="${eachSeries.mal_id}"><h4>Nombre de la serie: "${eachSeries.title}" </h4> <img data-id="${eachSeries.mal_id}"class="thumbnail"  src="${eachSeries.image_url}"/></li>`;
+      results.innerHTML += `<li class= "movieCard js_add_series" data-id="${eachSeries.mal_id}"><h4>Nombre de la serie: "${eachSeries.title}" </h4><p> Fecha de estreno: "${eachSeries.start_date} </p> <img data-id="${eachSeries.mal_id}"class="thumbnail"  src="${eachSeries.image_url}"/></li>`;
     }
   }
   //hacer clickables los li de cada serie
@@ -153,9 +170,6 @@ const handleAddToFavourites = (ev) => {
 
   //comprobar si una serie ya está en favoritos para que no se repita usando el array favouriteSeries y la variable clickedID
 
-  const selectedSeriesData = seriesSearch.find(
-    (singleSerie) => singleSerie.mal_id === clickedId
-  );
   const favoriteSeriesData = favouriteSeries.find(
     (singleFavSerie) => singleFavSerie.mal_id === clickedId
   );
