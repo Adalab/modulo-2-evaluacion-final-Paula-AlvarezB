@@ -1,5 +1,6 @@
+
 * {
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     background-color: black;
 }
 .body {
@@ -66,6 +67,7 @@
     width: 23%;
     padding: 30px;
     box-sizing:content-box;
+    
     
 }
 .movieDiv{

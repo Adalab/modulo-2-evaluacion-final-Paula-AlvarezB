@@ -138,6 +138,7 @@ function listenButtonDeleteAllFavorites() {
   const deleteAllFavs = document.querySelector(".js_buttonDeleteAllFavorites");
   deleteAllFavs.addEventListener("click", deleteAllFavorites);
 }
+
 function handleReset(event) {
   event.preventDefault;
   userValue.value = "";
@@ -210,7 +211,7 @@ function paintFavourites() {
   //x para borrar de uno en uno:
 
   listenButtonFavorites();
-  //borra todos
+  //botón para borrar todos
   listenButtonDeleteAllFavorites();
 }
 
